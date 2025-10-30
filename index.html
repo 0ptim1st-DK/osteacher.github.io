@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Учительский портал</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4a6fa5;
+            --secondary: #6b8cbc;
+            --accent: #ff7e5f;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1rem 0;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            font-size: 1.8rem;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        nav a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(74, 111, 165, 0.8), rgba(107, 140, 188, 0.8)), url('https://images.unsplash.com/photo-1523580494863-6f3031224c94?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            animation: fadeInDown 1s;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            animation: fadeInUp 1s;
+        }
+
+        /* Sections */
+        section {
+            padding: 3rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--primary);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background-color: var(--accent);
+            margin: 10px auto;
+            border-radius: 2px;
+        }
+
+        /* Profile Section */
+        .profile {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .profile-img {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid var(--secondary);
+        }
+
+        .profile-info h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .profile-info p {
+            margin-bottom: 1rem;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 1rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Works Section */
+        .works-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .work-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .work-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .work-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .work-content {
+            padding: 1.5rem;
+        }
+
+        .work-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .work-date {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .work-description {
+            margin-bottom: 1rem;
+        }
+
+        .work-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .tag {
+            background-color: var(--light);
+            color: var(--dark);
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        /* Login Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            animation: modalFadeIn 0.3s;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.25);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: var(--secondary);
+        }
+
+        .btn-accent {
+            background-color: var(--accent);
+        }
+
+        .btn-accent:hover {
+            background-color: #ff6b4a;
+        }
+
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+
+        /* Editor */
+        .editor-container {
+            display: none;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .editor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .editor-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background-color: var(--light);
+            border-radius: 4px;
+        }
+
+        .toolbar-btn {
+            padding: 0.5rem;
+            background: none;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .toolbar-btn:hover {
+            background-color: #e9ecef;
+        }
+
+        .editor-content {
+            min-height: 300px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .editor-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        /* Media Library */
+        .media-library {
+            display: none;
+            margin-top: 2rem;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            padding: 2rem;
+        }
+
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 1rem;
+        }
+
+        .media-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .media-item:hover {
+            transform: scale(1.05);
+        }
+
+        .media-item img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+        }
+
+        .media-item .media-name {
+            padding: 5px;
+            font-size: 0.8rem;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Hidden editor button */
+        .editor-access {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--accent);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: var(--transition);
+            z-index: 100;
+        }
+
+        .editor-access:hover {
+            transform: scale(1.1);
+            background-color: #ff6b4a;
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Notifications */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 5px;
+            color: white;
+            z-index: 3000;
+            box-shadow: var(--shadow);
+            animation: slideInRight 0.3s, slideOutRight 0.3s 2.7s;
+        }
+
+        .notification.success {
+            background-color: var(--success);
+        }
+
+        .notification.error {
+            background-color: var(--danger);
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOutRight {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav ul {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .profile {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .contact-info {
+                justify-content: center;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <h1>Учительский портал</h1>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#profile">Профиль</a></li>
+                        <li><a href="#about">Обо мне</a></li>
+                        <li><a href="#works">Работы</a></li>
+                        <li><a href="#resources">Ресурсы</a></li>
+                        <li><a href="#contact">Контакты</a></li>
+                    </ul>
+                </nav>
+                <button class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h2>Добро пожаловать на мой учительский портал</h2>
+            <p>Здесь вы найдете информацию о моей профессиональной деятельности, методические материалы и полезные ресурсы для обучения</p>
+        </div>
+    </section>
+
+    <!-- Profile Section -->
+    <section id="profile">
+        <div class="container">
+            <h2 class="section-title">Мой профиль</h2>
+            <div class="profile">
+                <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Фото учителя" class="profile-img">
+                <div class="profile-info">
+                    <h3>Анна Ивановна Петрова</h3>
+                    <p>Учитель математики и информатики высшей категории</p>
+                    <p>Стаж работы: 15 лет</p>
+                    <p>Образование: Магистр педагогических наук</p>
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>anna.petrova@school.ru</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <span>+7 (123) 456-78-90</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>г. Москва, ул. Школьная, 15</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <div class="container">
+            <h2 class="section-title">Обо мне</h2>
+            <div class="profile">
+                <div class="profile-info">
+                    <h3>Мой педагогический подход</h3>
+                    <p>Я считаю, что каждый ребенок уникален и имеет свой собственный путь к знаниям. Моя задача как педагога - создать благоприятную среду для развития потенциала каждого ученика.</p>
+                    <p>В своей работе я использую современные образовательные технологии, интерактивные методы обучения и индивидуальный подход к каждому ученику.</p>
+                    
+                    <h3>Мои достижения</h3>
+                    <ul>
+                        <li>Победитель конкурса "Учитель года 2020"</li>
+                        <li>Автор методических пособий по математике для 5-9 классов</li>
+                        <li>Эксперт ЕГЭ по математике</li>
+                        <li>Участник международных конференций по педагогике</li>
+                    </ul>
+                    
+                    <h3>Курсы повышения квалификации</h3>
+                    <ul>
+                        <li>Цифровые технологии в образовании (2023)</li>
+                        <li>Современные подходы к преподаванию математики (2022)</li>
+                        <li>Развитие критического мышления у учащихся (2021)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Works Section -->
+    <section id="works">
+        <div class="container">
+            <h2 class="section-title">Мои работы</h2>
+            <div class="works-grid" id="worksGrid">
+                <!-- Works will be loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Editor Access Button (Hidden) -->
+    <div class="editor-access" id="editorAccessBtn">
+        <i class="fas fa-edit"></i>
+    </div>
+
+    <!-- Editor Section -->
+    <section id="editor">
+        <div class="container">
+            <div class="editor-container" id="editorContainer">
+                <div class="editor-header">
+                    <h2 class="section-title">Редактор работ</h2>
+                    <div>
+                        <button class="btn" id="mediaLibraryBtn">Медиатека</button>
+                        <button class="btn btn-accent" id="saveWorkBtn">Сохранить работу</button>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="workTitle">Название работы</label>
+                    <input type="text" id="workTitle" class="form-control" placeholder="Введите название работы">
+                </div>
+                
+                <div class="form-group">
+                    <label for="workDescription">Краткое описание</label>
+                    <textarea id="workDescription" class="form-control" rows="3" placeholder="Введите краткое описание работы"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="workTags">Теги (через запятую)</label>
+                    <input type="text" id="workTags" class="form-control" placeholder="математика, 5 класс, задание">
+                </div>
+
+                <div class="form-group">
+                    <label for="workCategory">Категория</label>
+                    <select id="workCategory" class="form-control">
+                        <option value="methodology">Методические материалы</option>
+                        <option value="lesson">Разработки уроков</option>
+                        <option value="project">Проектные работы</option>
+                        <option value="presentation">Презентации</option>
+                        <option value="other">Другое</option>
+                    </select>
+                </div>
+                
+                <div class="editor-toolbar">
+                    <button class="toolbar-btn" data-command="bold"><i class="fas fa-bold"></i></button>
+                    <button class="toolbar-btn" data-command="italic"><i class="fas fa-italic"></i></button>
+                    <button class="toolbar-btn" data-command="underline"><i class="fas fa-underline"></i></button>
+                    <button class="toolbar-btn" data-command="insertUnorderedList"><i class="fas fa-list-ul"></i></button>
+                    <button class="toolbar-btn" data-command="insertOrderedList"><i class="fas fa-list-ol"></i></button>
+                    <button class="toolbar-btn" data-command="createLink"><i class="fas fa-link"></i></button>
+                    <button class="toolbar-btn" id="insertImageBtn"><i class="fas fa-image"></i></button>
+                    <button class="toolbar-btn" id="uploadFileBtn"><i class="fas fa-file-upload"></i></button>
+                    <button class="toolbar-btn" id="insertTableBtn"><i class="fas fa-table"></i></button>
+                    <button class="toolbar-btn" id="insertVideoBtn"><i class="fas fa-video"></i></button>
+                </div>
+                
+                <div class="editor-content" id="editorContent" contenteditable="true">
+                    <p>Начните вводить текст вашей работы здесь...</p>
+                </div>
+                
+                <div class="editor-actions">
+                    <button class="btn" id="previewWorkBtn">Предпросмотр</button>
+                    <button class="btn btn-accent" id="publishWorkBtn">Опубликовать</button>
+                </div>
+            </div>
+
+            <!-- Media Library -->
+            <div class="media-library" id="mediaLibrary">
+                <div class="editor-header">
+                    <h2 class="section-title">Медиатека</h2>
+                    <div>
+                        <button class="btn" id="closeMediaLibraryBtn">Закрыть</button>
+                        <button class="btn btn-accent" id="uploadMediaBtn">Загрузить медиа</button>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <input type="file" id="mediaUploadInput" multiple accept="image/*,video/*,.pdf,.doc,.docx,.ppt,.pptx" style="display: none;">
+                    <div class="media-grid" id="mediaGrid">
+                        <!-- Media items will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="logo">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <h2>Учительский портал</h2>
+                </div>
+                <div class="footer-links">
+                    <a href="#profile">Профиль</a>
+                    <a href="#about">Обо мне</a>
+                    <a href="#works">Работы</a>
+                    <a href="#resources">Ресурсы</a>
+                    <a href="#contact">Контакты</a>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 Учительский портал. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Доступ к редактору</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="form-group">
+                <label for="accessKey">Ключ доступа</label>
+                <input type="password" id="accessKey" class="form-control" placeholder="Введите ключ доступа">
+            </div>
+            <button class="btn btn-block btn-accent" id="loginBtn">Войти</button>
+        </div>
+    </div>
+
+    <script>
+        // Конфигурация GitHub API
+        const GITHUB_CONFIG = {
+            token: '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',
+            owner: '0ptim1st-DK',
+            repo: 'osteacher.github.io',
+            baseUrl: 'https://api.github.com',
+            headers: {
+                'Authorization': `token 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`,
+                'Accept': 'application/vnd.github.v3+json',
+                'Content-Type': 'application/json'
+            }
+        };
+
+        // DOM Elements
+        const editorAccessBtn = document.getElementById('editorAccessBtn');
+        const loginModal = document.getElementById('loginModal');
+        const closeModalBtn = document.querySelector('.close-modal');
+        const loginBtn = document.getElementById('loginBtn');
+        const accessKeyInput = document.getElementById('accessKey');
+        const editorContainer = document.getElementById('editorContainer');
+        const toolbarBtns = document.querySelectorAll('.toolbar-btn');
+        const editorContent = document.getElementById('editorContent');
+        const insertImageBtn = document.getElementById('insertImageBtn');
+        const uploadFileBtn = document.getElementById('uploadFileBtn');
+        const insertTableBtn = document.getElementById('insertTableBtn');
+        const insertVideoBtn = document.getElementById('insertVideoBtn');
+        const saveWorkBtn = document.getElementById('saveWorkBtn');
+        const previewWorkBtn = document.getElementById('previewWorkBtn');
+        const publishWorkBtn = document.getElementById('publishWorkBtn');
+        const mediaLibraryBtn = document.getElementById('mediaLibraryBtn');
+        const mediaLibrary = document.getElementById('mediaLibrary');
+        const closeMediaLibraryBtn = document.getElementById('closeMediaLibraryBtn');
+        const uploadMediaBtn = document.getElementById('uploadMediaBtn');
+        const mediaUploadInput = document.getElementById('mediaUploadInput');
+        const mediaGrid = document.getElementById('mediaGrid');
+        const worksGrid = document.getElementById('worksGrid');
+
+        // Correct access key
+        const CORRECT_KEY = "OSTEACHER1";
+
+        // State
+        let isLoggedIn = false;
+        let currentWorkId = null;
+        let mediaFiles = [];
+
+        // GitHub API functions
+        async function githubAPI(endpoint, options = {}) {
+            const url = `${GITHUB_CONFIG.baseUrl}/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}${endpoint}`;
+            
+            const config = {
+                headers: GITHUB_CONFIG.headers,
+                ...options
+            };
+
+            try {
+                const response = await fetch(url, config);
+                if (!response.ok) {
+                    throw new Error(`GitHub API error: ${response.status} ${response.statusText}`);
+                }
+                return await response.json();
+            } catch (error) {
+                console.error('GitHub API request failed:', error);
+                showNotification('Ошибка при обращении к GitHub API', 'error');
+                throw error;
+            }
+        }
+
+        async function createFile(path, content, message) {
+            return await githubAPI(`/contents/${path}`, {
+                method: 'PUT',
+                body: JSON.stringify({
+                    message: message,
+                    content: btoa(unescape(encodeURIComponent(content)))
+                })
+            });
+        }
+
+        async function getFile(path) {
+            const data = await githubAPI(`/contents/${path}`);
+            return decodeURIComponent(escape(atob(data.content)));
+        }
+
+        async function getDirectory(path) {
+            return await githubAPI(`/contents/${path}`);
+        }
+
+        async function uploadMediaFile(file, filename) {
+            const reader = new FileReader();
+            
+            return new Promise((resolve, reject) => {
+                reader.onload = async function() {
+                    const content = reader.result.split(',')[1]; // Remove data URL prefix
+                    
+                    try {
+                        const result = await createFile(
+                            `media/${filename}`,
+                            content,
+                            `Добавлен медиафайл: ${filename}`
+                        );
+                        resolve(result);
+                    } catch (error) {
+                        reject(error);
+                    }
+                };
+                
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // Utility functions
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        function generateId() {
+            return Date.now().toString(36) + Math.random().toString(36).substr(2);
+        }
+
+        function formatDate(date) {
+            return new Date(date).toLocaleDateString('ru-RU', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+
+        // Load works from GitHub
+        async function loadWorks() {
+            try {
+                const worksData = await getFile('data/works.json');
+                const works = JSON.parse(worksData);
+                displayWorks(works);
+            } catch (error) {
+                console.log('No works found, starting with empty list');
+                displayWorks([]);
+            }
+        }
+
+        function displayWorks(works) {
+            worksGrid.innerHTML = '';
+            
+            if (works.length === 0) {
+                worksGrid.innerHTML = '<p>Работы пока не добавлены.</p>';
+                return;
+            }
+            
+            works.forEach(work => {
+                const workCard = document.createElement('div');
+                workCard.className = 'work-card';
+                workCard.innerHTML = `
+                    <img src="${work.image || 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'}" alt="${work.title}" class="work-img">
+                    <div class="work-content">
+                        <h3 class="work-title">${work.title}</h3>
+                        <div class="work-date">Опубликовано: ${formatDate(work.date)}</div>
+                        <p class="work-description">${work.description}</p>
+                        <div class="work-tags">
+                            ${work.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                        </div>
+                        ${isLoggedIn ? `<button class="btn" onclick="editWork('${work.id}')">Редактировать</button>` : ''}
+                    </div>
+                `;
+                worksGrid.appendChild(workCard);
+            });
+        }
+
+        // Load media files from GitHub
+        async function loadMediaFiles() {
+            try {
+                const mediaFilesData = await getDirectory('media');
+                mediaGrid.innerHTML = '';
+                
+                mediaFilesData.forEach(file => {
+                    if (file.type === 'file') {
+                        const mediaItem = document.createElement('div');
+                        mediaItem.className = 'media-item';
+                        mediaItem.innerHTML = `
+                            <img src="${file.download_url}" alt="${file.name}">
+                            <div class="media-name">${file.name}</div>
+                        `;
+                        mediaItem.addEventListener('click', () => {
+                            insertMediaIntoEditor(file.download_url, file.name);
+                        });
+                        mediaGrid.appendChild(mediaItem);
+                    }
+                });
+            } catch (error) {
+                console.log('No media files found');
+                mediaGrid.innerHTML = '<p>Медиафайлы не найдены.</p>';
+            }
+        }
+
+        function insertMediaIntoEditor(url, altText) {
+            const isImage = /\.(jpg|jpeg|png|gif|webp)$/i.test(url);
+            const isVideo = /\.(mp4|webm|ogg)$/i.test(url);
+            
+            if (isImage) {
+                document.execCommand('insertImage', false, url);
+            } else if (isVideo) {
+                const videoHtml = `<video controls width="100%"><source src="${url}" type="video/mp4">Ваш браузер не поддерживает видео.</video>`;
+                document.execCommand('insertHTML', false, videoHtml);
+            } else {
+                // For other file types, insert a link
+                document.execCommand('createLink', false, url);
+            }
+            
+            showNotification(`Медиафайл "${altText}" вставлен в редактор`);
+            mediaLibrary.style.display = 'none';
+            editorContainer.style.display = 'block';
+        }
+
+        // Editor functions
+        async function saveWork() {
+            const title = document.getElementById('workTitle').value;
+            const description = document.getElementById('workDescription').value;
+            const tags = document.getElementById('workTags').value.split(',').map(tag => tag.trim());
+            const category = document.getElementById('workCategory').value;
+            const content = editorContent.innerHTML;
+            
+            if (!title) {
+                showNotification('Пожалуйста, введите название работы', 'error');
+                return;
+            }
+            
+            const workId = currentWorkId || generateId();
+            const work = {
+                id: workId,
+                title,
+                description,
+                tags,
+                category,
+                content,
+                date: new Date().toISOString(),
+                image: extractFirstImage(content) || 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'
+            };
+            
+            try {
+                // Load existing works
+                let works = [];
+                try {
+                    const worksData = await getFile('data/works.json');
+                    works = JSON.parse(worksData);
+                } catch (error) {
+                    // File doesn't exist yet, start with empty array
+                }
+                
+                // Update or add work
+                const existingIndex = works.findIndex(w => w.id === workId);
+                if (existingIndex >= 0) {
+                    works[existingIndex] = work;
+                } else {
+                    works.push(work);
+                }
+                
+                // Save works back to GitHub
+                await createFile(
+                    'data/works.json',
+                    JSON.stringify(works, null, 2),
+                    `${existingIndex >= 0 ? 'Обновлена' : 'Добавлена'} работа: ${title}`
+                );
+                
+                showNotification(`Работа "${title}" успешно сохранена!`);
+                loadWorks();
+                
+                if (!currentWorkId) {
+                    // Reset form for new work
+                    resetEditor();
+                }
+            } catch (error) {
+                showNotification('Ошибка при сохранении работы', 'error');
+            }
+        }
+
+        function extractFirstImage(html) {
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = html;
+            const img = tempDiv.querySelector('img');
+            return img ? img.src : null;
+        }
+
+        function resetEditor() {
+            document.getElementById('workTitle').value = '';
+            document.getElementById('workDescription').value = '';
+            document.getElementById('workTags').value = '';
+            document.getElementById('workCategory').value = 'methodology';
+            editorContent.innerHTML = '<p>Начните вводить текст вашей работы здесь...</p>';
+            currentWorkId = null;
+        }
+
+        async function editWork(workId) {
+            try {
+                const worksData = await getFile('data/works.json');
+                const works = JSON.parse(worksData);
+                const work = works.find(w => w.id === workId);
+                
+                if (work) {
+                    document.getElementById('workTitle').value = work.title;
+                    document.getElementById('workDescription').value = work.description;
+                    document.getElementById('workTags').value = work.tags.join(', ');
+                    document.getElementById('workCategory').value = work.category;
+                    editorContent.innerHTML = work.content;
+                    currentWorkId = workId;
+                    
+                    // Scroll to editor
+                    document.getElementById('editor').scrollIntoView({ behavior: 'smooth' });
+                }
+            } catch (error) {
+                showNotification('Ошибка при загрузке работы', 'error');
+            }
+        }
+
+        function previewWork() {
+            const title = document.getElementById('workTitle').value || 'Без названия';
+            const content = editorContent.innerHTML;
+            
+            const previewWindow = window.open('', '_blank');
+            previewWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Предпросмотр: ${title}</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; padding: 20px; max-width: 800px; margin: 0 auto; }
+                        .preview-title { color: #4a6fa5; margin-bottom: 20px; border-bottom: 2px solid #ff7e5f; padding-bottom: 10px; }
+                        .preview-content img { max-width: 100%; height: auto; }
+                        .preview-content video { max-width: 100%; }
+                    </style>
+                </head>
+                <body>
+                    <h1 class="preview-title">${title}</h1>
+                    <div class="preview-content">${content}</div>
+                </body>
+                </html>
+            `);
+            previewWindow.document.close();
+        }
+
+        // Event Listeners
+        editorAccessBtn.addEventListener('click', () => {
+            loginModal.style.display = 'flex';
+        });
+
+        closeModalBtn.addEventListener('click', () => {
+            loginModal.style.display = 'none';
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target === loginModal) {
+                loginModal.style.display = 'none';
+            }
+        });
+
+        loginBtn.addEventListener('click', () => {
+            const enteredKey = accessKeyInput.value.trim();
+            
+            if (enteredKey === CORRECT_KEY) {
+                isLoggedIn = true;
+                loginModal.style.display = 'none';
+                editorContainer.style.display = 'block';
+                showNotification('Доступ к редактору разрешен!');
+                accessKeyInput.value = '';
+                loadWorks();
+                loadMediaFiles();
+            } else {
+                showNotification('Неверный ключ доступа! Попробуйте снова.', 'error');
+                accessKeyInput.value = '';
+                accessKeyInput.focus();
+            }
+        });
+
+        toolbarBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const command = btn.dataset.command;
+                
+                if (command) {
+                    document.execCommand(command, false, null);
+                    editorContent.focus();
+                }
+            });
+        });
+
+        insertImageBtn.addEventListener('click', () => {
+            mediaLibrary.style.display = 'block';
+            editorContainer.style.display = 'none';
+            loadMediaFiles();
+        });
+
+        insertVideoBtn.addEventListener('click', () => {
+            mediaLibrary.style.display = 'block';
+            editorContainer.style.display = 'none';
+            loadMediaFiles();
+        });
+
+        uploadFileBtn.addEventListener('click', () => {
+            mediaUploadInput.click();
+        });
+
+        insertTableBtn.addEventListener('click', () => {
+            const tableHtml = `
+                <table border="1" style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr>
+                            <th style="padding: 8px; border: 1px solid #ddd;">Заголовок 1</th>
+                            <th style="padding: 8px; border: 1px solid #ddd;">Заголовок 2</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 8px; border: 1px solid #ddd;">Ячейка 1</td>
+                            <td style="padding: 8px; border: 1px solid #ddd;">Ячейка 2</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px; border: 1px solid #ddd;">Ячейка 3</td>
+                            <td style="padding: 8px; border: 1px solid #ddd;">Ячейка 4</td>
+                        </tr>
+                    </tbody>
+                </table>
+            `;
+            document.execCommand('insertHTML', false, tableHtml);
+        });
+
+        saveWorkBtn.addEventListener('click', saveWork);
+
+        previewWorkBtn.addEventListener('click', previewWork);
+
+        publishWorkBtn.addEventListener('click', () => {
+            saveWork();
+            showNotification('Работа опубликована!');
+        });
+
+        mediaLibraryBtn.addEventListener('click', () => {
+            mediaLibrary.style.display = 'block';
+            editorContainer.style.display = 'none';
+            loadMediaFiles();
+        });
+
+        closeMediaLibraryBtn.addEventListener('click', () => {
+            mediaLibrary.style.display = 'none';
+            editorContainer.style.display = 'block';
+        });
+
+        uploadMediaBtn.addEventListener('click', () => {
+            mediaUploadInput.click();
+        });
+
+        mediaUploadInput.addEventListener('change', async (e) => {
+            const files = Array.from(e.target.files);
+            
+            for (const file of files) {
+                const filename = `${generateId()}_${file.name}`;
+                
+                try {
+                    await uploadMediaFile(file, filename);
+                    showNotification(`Файл "${file.name}" успешно загружен`);
+                } catch (error) {
+                    showNotification(`Ошибка при загрузке файла "${file.name}"`, 'error');
+                }
+            }
+            
+            // Refresh media library
+            loadMediaFiles();
+            mediaUploadInput.value = '';
+        });
+
+        // Mobile menu functionality
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const nav = document.querySelector('nav');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            nav.style.display = nav.style.display === 'block' ? 'none' : 'block';
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    if (window.innerWidth <= 768) {
+                        nav.style.display = 'none';
+                    }
+                }
+            });
+        });
+
+        // Initialize
+        loadWorks();
+    </script>
+</body>
+</html>
