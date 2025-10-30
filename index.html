@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Учительский портал</title>
+    <title>Калугина Ольга - Учительский портал</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -155,6 +155,25 @@
             border-radius: 10px;
             box-shadow: var(--shadow);
             margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .profile-edit-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: none;
+        }
+
+        .profile-edit-btn:hover {
+            background: #ff6b4a;
         }
 
         .profile-img {
@@ -237,6 +256,7 @@
             display: flex;
             flex-wrap: wrap;
             gap: 5px;
+            margin-bottom: 1rem;
         }
 
         .tag {
@@ -245,6 +265,12 @@
             padding: 3px 8px;
             border-radius: 20px;
             font-size: 0.8rem;
+        }
+
+        .work-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 1rem;
         }
 
         /* Login Modal */
@@ -328,6 +354,7 @@
             cursor: pointer;
             transition: var(--transition);
             text-align: center;
+            text-decoration: none;
         }
 
         .btn:hover {
@@ -342,9 +369,22 @@
             background-color: #ff6b4a;
         }
 
+        .btn-success {
+            background-color: var(--success);
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+        }
+
         .btn-block {
             display: block;
             width: 100%;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
         }
 
         /* Editor */
@@ -426,10 +466,12 @@
             overflow: hidden;
             cursor: pointer;
             transition: var(--transition);
+            border: 2px solid transparent;
         }
 
         .media-item:hover {
             transform: scale(1.05);
+            border-color: var(--accent);
         }
 
         .media-item img {
@@ -448,6 +490,55 @@
             bottom: 0;
             left: 0;
             right: 0;
+        }
+
+        .media-actions {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            display: flex;
+            gap: 5px;
+        }
+
+        .media-action-btn {
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            border-radius: 3px;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.7rem;
+        }
+
+        /* Drop Zone */
+        .drop-zone {
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            margin: 1rem 0;
+            transition: var(--transition);
+            background: var(--light);
+        }
+
+        .drop-zone.active {
+            border-color: var(--accent);
+            background: rgba(255, 126, 95, 0.1);
+        }
+
+        .drop-zone p {
+            margin: 0;
+            color: #6c757d;
+        }
+
+        .drop-zone i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
         }
 
         /* Footer */
@@ -618,6 +709,16 @@
                 gap: 20px;
                 text-align: center;
             }
+
+            .editor-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+
+            .work-actions {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -628,7 +729,7 @@
             <div class="header-content">
                 <div class="logo">
                     <i class="fas fa-chalkboard-teacher"></i>
-                    <h1>Учительский портал</h1>
+                    <h1>Калугина Ольга</h1>
                 </div>
                 <nav>
                     <ul>
@@ -659,24 +760,27 @@
         <div class="container">
             <h2 class="section-title">Мой профиль</h2>
             <div class="profile">
-                <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Фото учителя" class="profile-img">
+                <button class="profile-edit-btn" id="profileEditBtn">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Фото учителя" class="profile-img" id="profileImage">
                 <div class="profile-info">
-                    <h3>Анна Ивановна Петрова</h3>
-                    <p>Учитель математики и информатики высшей категории</p>
-                    <p>Стаж работы: 15 лет</p>
-                    <p>Образование: Магистр педагогических наук</p>
+                    <h3 id="profileName">Калугина Ольга Сергеевна</h3>
+                    <p id="profilePosition">Учитель математики и информатики высшей категории</p>
+                    <p id="profileExperience">Стаж работы: 15 лет</p>
+                    <p id="profileEducation">Образование: Магистр педагогических наук</p>
                     <div class="contact-info">
                         <div class="contact-item">
                             <i class="fas fa-envelope"></i>
-                            <span>anna.petrova@school.ru</span>
+                            <span id="profileEmail">olga.kalugina@school.ru</span>
                         </div>
                         <div class="contact-item">
                             <i class="fas fa-phone"></i>
-                            <span>+7 (123) 456-78-90</span>
+                            <span id="profilePhone">+7 (123) 456-78-90</span>
                         </div>
                         <div class="contact-item">
                             <i class="fas fa-map-marker-alt"></i>
-                            <span>г. Москва, ул. Школьная, 15</span>
+                            <span id="profileAddress">г. Москва, ул. Школьная, 15</span>
                         </div>
                     </div>
                 </div>
@@ -800,7 +904,14 @@
                 </div>
                 
                 <div class="form-group">
-                    <input type="file" id="mediaUploadInput" multiple accept="image/*,video/*,.pdf,.doc,.docx,.ppt,.pptx" style="display: none;">
+                    <input type="file" id="mediaUploadInput" multiple accept="image/*,video/*,.pdf,.doc,.docx,.ppt,.pptx,.txt" style="display: none;">
+                    
+                    <div class="drop-zone" id="dropZone">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Перетащите файлы сюда или нажмите для выбора</p>
+                        <p class="small">Поддерживаются: изображения, видео, PDF, документы</p>
+                    </div>
+                    
                     <div class="media-grid" id="mediaGrid">
                         <!-- Media items will be loaded here -->
                     </div>
@@ -815,7 +926,7 @@
             <div class="footer-content">
                 <div class="logo">
                     <i class="fas fa-chalkboard-teacher"></i>
-                    <h2>Учительский портал</h2>
+                    <h2>Калугина Ольга</h2>
                 </div>
                 <div class="footer-links">
                     <a href="#profile">Профиль</a>
@@ -826,7 +937,7 @@
                 </div>
             </div>
             <div class="copyright">
-                <p>&copy; 2023 Учительский портал. Все права защищены.</p>
+                <p>&copy; 2023 Калугина Ольга. Все права защищены.</p>
             </div>
         </div>
     </footer>
@@ -846,15 +957,58 @@
         </div>
     </div>
 
+    <!-- Profile Edit Modal -->
+    <div class="modal" id="profileEditModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Редактирование профиля</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="form-group">
+                <label for="editName">ФИО</label>
+                <input type="text" id="editName" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="editPosition">Должность</label>
+                <input type="text" id="editPosition" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="editExperience">Стаж работы</label>
+                <input type="text" id="editExperience" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="editEducation">Образование</label>
+                <input type="text" id="editEducation" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="editEmail">Email</label>
+                <input type="email" id="editEmail" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="editPhone">Телефон</label>
+                <input type="tel" id="editPhone" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="editAddress">Адрес</label>
+                <input type="text" id="editAddress" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="editImage">URL изображения</label>
+                <input type="url" id="editImage" class="form-control">
+            </div>
+            <button class="btn btn-block btn-success" id="saveProfileBtn">Сохранить изменения</button>
+        </div>
+    </div>
+
     <script>
         // Конфигурация GitHub API
         const GITHUB_CONFIG = {
-            token: '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',
+            token: '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',
             owner: '0ptim1st-DK',
             repo: 'osteacher.github.io',
             baseUrl: 'https://api.github.com',
             headers: {
-                'Authorization': `token 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`,
+                'Authorization': 'token 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',
                 'Accept': 'application/vnd.github.v3+json',
                 'Content-Type': 'application/json'
             }
@@ -863,7 +1017,7 @@
         // DOM Elements
         const editorAccessBtn = document.getElementById('editorAccessBtn');
         const loginModal = document.getElementById('loginModal');
-        const closeModalBtn = document.querySelector('.close-modal');
+        const closeModalBtns = document.querySelectorAll('.close-modal');
         const loginBtn = document.getElementById('loginBtn');
         const accessKeyInput = document.getElementById('accessKey');
         const editorContainer = document.getElementById('editorContainer');
@@ -883,6 +1037,30 @@
         const mediaUploadInput = document.getElementById('mediaUploadInput');
         const mediaGrid = document.getElementById('mediaGrid');
         const worksGrid = document.getElementById('worksGrid');
+        const dropZone = document.getElementById('dropZone');
+        const profileEditBtn = document.getElementById('profileEditBtn');
+        const profileEditModal = document.getElementById('profileEditModal');
+        const saveProfileBtn = document.getElementById('saveProfileBtn');
+
+        // Profile elements
+        const profileName = document.getElementById('profileName');
+        const profilePosition = document.getElementById('profilePosition');
+        const profileExperience = document.getElementById('profileExperience');
+        const profileEducation = document.getElementById('profileEducation');
+        const profileEmail = document.getElementById('profileEmail');
+        const profilePhone = document.getElementById('profilePhone');
+        const profileAddress = document.getElementById('profileAddress');
+        const profileImage = document.getElementById('profileImage');
+
+        // Edit profile elements
+        const editName = document.getElementById('editName');
+        const editPosition = document.getElementById('editPosition');
+        const editExperience = document.getElementById('editExperience');
+        const editEducation = document.getElementById('editEducation');
+        const editEmail = document.getElementById('editEmail');
+        const editPhone = document.getElementById('editPhone');
+        const editAddress = document.getElementById('editAddress');
+        const editImage = document.getElementById('editImage');
 
         // Correct access key
         const CORRECT_KEY = "OSTEACHER1";
@@ -925,12 +1103,37 @@
         }
 
         async function getFile(path) {
-            const data = await githubAPI(`/contents/${path}`);
-            return decodeURIComponent(escape(atob(data.content)));
+            try {
+                const data = await githubAPI(`/contents/${path}`);
+                return decodeURIComponent(escape(atob(data.content)));
+            } catch (error) {
+                return null;
+            }
         }
 
         async function getDirectory(path) {
-            return await githubAPI(`/contents/${path}`);
+            try {
+                return await githubAPI(`/contents/${path}`);
+            } catch (error) {
+                return [];
+            }
+        }
+
+        async function deleteFile(path, message) {
+            try {
+                // First get the file to get its SHA
+                const fileData = await githubAPI(`/contents/${path}`);
+                return await githubAPI(`/contents/${path}`, {
+                    method: 'DELETE',
+                    body: JSON.stringify({
+                        message: message,
+                        sha: fileData.sha
+                    })
+                });
+            } catch (error) {
+                console.error('Error deleting file:', error);
+                throw error;
+            }
         }
 
         async function uploadMediaFile(file, filename) {
@@ -938,7 +1141,7 @@
             
             return new Promise((resolve, reject) => {
                 reader.onload = async function() {
-                    const content = reader.result.split(',')[1]; // Remove data URL prefix
+                    const content = reader.result.split(',')[1];
                     
                     try {
                         const result = await createFile(
@@ -980,12 +1183,65 @@
             });
         }
 
+        function downloadFile(url, filename) {
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        // Load profile data
+        async function loadProfile() {
+            try {
+                const profileData = await getFile('data/profile.json');
+                if (profileData) {
+                    const profile = JSON.parse(profileData);
+                    updateProfileDisplay(profile);
+                }
+            } catch (error) {
+                console.log('No profile data found, using default');
+            }
+        }
+
+        function updateProfileDisplay(profile) {
+            profileName.textContent = profile.name || 'Калугина Ольга Сергеевна';
+            profilePosition.textContent = profile.position || 'Учитель математики и информатики высшей категории';
+            profileExperience.textContent = profile.experience || 'Стаж работы: 15 лет';
+            profileEducation.textContent = profile.education || 'Образование: Магистр педагогических наук';
+            profileEmail.textContent = profile.email || 'olga.kalugina@school.ru';
+            profilePhone.textContent = profile.phone || '+7 (123) 456-78-90';
+            profileAddress.textContent = profile.address || 'г. Москва, ул. Школьная, 15';
+            if (profile.image) {
+                profileImage.src = profile.image;
+            }
+        }
+
+        async function saveProfile(profile) {
+            try {
+                await createFile(
+                    'data/profile.json',
+                    JSON.stringify(profile, null, 2),
+                    'Обновление профиля'
+                );
+                updateProfileDisplay(profile);
+                showNotification('Профиль успешно обновлен!');
+            } catch (error) {
+                showNotification('Ошибка при сохранении профиля', 'error');
+            }
+        }
+
         // Load works from GitHub
         async function loadWorks() {
             try {
                 const worksData = await getFile('data/works.json');
-                const works = JSON.parse(worksData);
-                displayWorks(works);
+                if (worksData) {
+                    const works = JSON.parse(worksData);
+                    displayWorks(works);
+                } else {
+                    displayWorks([]);
+                }
             } catch (error) {
                 console.log('No works found, starting with empty list');
                 displayWorks([]);
@@ -996,7 +1252,7 @@
             worksGrid.innerHTML = '';
             
             if (works.length === 0) {
-                worksGrid.innerHTML = '<p>Работы пока не добавлены.</p>';
+                worksGrid.innerHTML = '<p style="text-align: center; grid-column: 1 / -1;">Работы пока не добавлены.</p>';
                 return;
             }
             
@@ -1012,7 +1268,23 @@
                         <div class="work-tags">
                             ${work.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
                         </div>
-                        ${isLoggedIn ? `<button class="btn" onclick="editWork('${work.id}')">Редактировать</button>` : ''}
+                        <div class="work-actions">
+                            <button class="btn btn-sm" onclick="viewWork('${work.id}')">
+                                <i class="fas fa-eye"></i> Просмотреть
+                            </button>
+                            ${isLoggedIn ? `
+                            <button class="btn btn-sm btn-accent" onclick="editWork('${work.id}')">
+                                <i class="fas fa-edit"></i> Редактировать
+                            </button>
+                            <button class="btn btn-sm btn-success" onclick="downloadWork('${work.id}')">
+                                <i class="fas fa-download"></i> Скачать
+                            </button>
+                            ` : `
+                            <button class="btn btn-sm btn-success" onclick="downloadWork('${work.id}')">
+                                <i class="fas fa-download"></i> Скачать
+                            </button>
+                            `}
+                        </div>
                     </div>
                 `;
                 worksGrid.appendChild(workCard);
@@ -1025,23 +1297,59 @@
                 const mediaFilesData = await getDirectory('media');
                 mediaGrid.innerHTML = '';
                 
+                if (mediaFilesData.length === 0) {
+                    mediaGrid.innerHTML = '<p style="text-align: center; grid-column: 1 / -1;">Медиафайлы не найдены.</p>';
+                    return;
+                }
+                
                 mediaFilesData.forEach(file => {
                     if (file.type === 'file') {
                         const mediaItem = document.createElement('div');
                         mediaItem.className = 'media-item';
+                        
+                        const isImage = /\.(jpg|jpeg|png|gif|webp)$/i.test(file.name);
+                        const isVideo = /\.(mp4|webm|ogg)$/i.test(file.name);
+                        
                         mediaItem.innerHTML = `
-                            <img src="${file.download_url}" alt="${file.name}">
+                            ${isImage ? `<img src="${file.download_url}" alt="${file.name}">` : ''}
+                            ${isVideo ? `<i class="fas fa-video" style="font-size: 3rem; text-align: center; display: block; padding: 30px 0; color: #6c757d;"></i>` : ''}
+                            ${!isImage && !isVideo ? `<i class="fas fa-file" style="font-size: 3rem; text-align: center; display: block; padding: 30px 0; color: #6c757d;"></i>` : ''}
                             <div class="media-name">${file.name}</div>
+                            ${isLoggedIn ? `
+                            <div class="media-actions">
+                                <button class="media-action-btn" onclick="deleteMediaFile('${file.name}')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                            ` : ''}
                         `;
+                        
                         mediaItem.addEventListener('click', () => {
-                            insertMediaIntoEditor(file.download_url, file.name);
+                            if (isLoggedIn) {
+                                insertMediaIntoEditor(file.download_url, file.name);
+                            } else {
+                                downloadFile(file.download_url, file.name);
+                            }
                         });
+                        
                         mediaGrid.appendChild(mediaItem);
                     }
                 });
             } catch (error) {
                 console.log('No media files found');
-                mediaGrid.innerHTML = '<p>Медиафайлы не найдены.</p>';
+                mediaGrid.innerHTML = '<p style="text-align: center; grid-column: 1 / -1;">Медиафайлы не найдены.</p>';
+            }
+        }
+
+        async function deleteMediaFile(filename) {
+            if (confirm(`Вы уверены, что хотите удалить файл "${filename}"?`)) {
+                try {
+                    await deleteFile(`media/${filename}`, `Удален медиафайл: ${filename}`);
+                    showNotification(`Файл "${filename}" удален`);
+                    loadMediaFiles();
+                } catch (error) {
+                    showNotification('Ошибка при удалении файла', 'error');
+                }
             }
         }
 
@@ -1056,7 +1364,7 @@
                 document.execCommand('insertHTML', false, videoHtml);
             } else {
                 // For other file types, insert a link
-                document.execCommand('createLink', false, url);
+                document.execCommand('insertHTML', false, `<a href="${url}" target="_blank">${altText}</a>`);
             }
             
             showNotification(`Медиафайл "${altText}" вставлен в редактор`);
@@ -1094,7 +1402,9 @@
                 let works = [];
                 try {
                     const worksData = await getFile('data/works.json');
-                    works = JSON.parse(worksData);
+                    if (worksData) {
+                        works = JSON.parse(worksData);
+                    }
                 } catch (error) {
                     // File doesn't exist yet, start with empty array
                 }
@@ -1145,22 +1455,115 @@
         async function editWork(workId) {
             try {
                 const worksData = await getFile('data/works.json');
-                const works = JSON.parse(worksData);
-                const work = works.find(w => w.id === workId);
-                
-                if (work) {
-                    document.getElementById('workTitle').value = work.title;
-                    document.getElementById('workDescription').value = work.description;
-                    document.getElementById('workTags').value = work.tags.join(', ');
-                    document.getElementById('workCategory').value = work.category;
-                    editorContent.innerHTML = work.content;
-                    currentWorkId = workId;
+                if (worksData) {
+                    const works = JSON.parse(worksData);
+                    const work = works.find(w => w.id === workId);
                     
-                    // Scroll to editor
-                    document.getElementById('editor').scrollIntoView({ behavior: 'smooth' });
+                    if (work) {
+                        document.getElementById('workTitle').value = work.title;
+                        document.getElementById('workDescription').value = work.description;
+                        document.getElementById('workTags').value = work.tags.join(', ');
+                        document.getElementById('workCategory').value = work.category;
+                        editorContent.innerHTML = work.content;
+                        currentWorkId = workId;
+                        
+                        // Scroll to editor
+                        document.getElementById('editor').scrollIntoView({ behavior: 'smooth' });
+                    }
                 }
             } catch (error) {
                 showNotification('Ошибка при загрузке работы', 'error');
+            }
+        }
+
+        async function viewWork(workId) {
+            try {
+                const worksData = await getFile('data/works.json');
+                if (worksData) {
+                    const works = JSON.parse(worksData);
+                    const work = works.find(w => w.id === workId);
+                    
+                    if (work) {
+                        const viewWindow = window.open('', '_blank');
+                        viewWindow.document.write(`
+                            <!DOCTYPE html>
+                            <html>
+                            <head>
+                                <title>${work.title}</title>
+                                <style>
+                                    body { font-family: Arial, sans-serif; padding: 20px; max-width: 800px; margin: 0 auto; }
+                                    .work-title { color: #4a6fa5; margin-bottom: 20px; border-bottom: 2px solid #ff7e5f; padding-bottom: 10px; }
+                                    .work-content img { max-width: 100%; height: auto; }
+                                    .work-content video { max-width: 100%; }
+                                    .work-meta { color: #6c757d; margin-bottom: 20px; }
+                                    .download-btn { display: inline-block; padding: 10px 20px; background: #28a745; color: white; text-decoration: none; border-radius: 4px; margin-top: 20px; }
+                                </style>
+                            </head>
+                            <body>
+                                <h1 class="work-title">${work.title}</h1>
+                                <div class="work-meta">
+                                    <strong>Опубликовано:</strong> ${formatDate(work.date)}<br>
+                                    <strong>Теги:</strong> ${work.tags.join(', ')}
+                                </div>
+                                <div class="work-description">
+                                    <strong>Описание:</strong> ${work.description}
+                                </div>
+                                <div class="work-content">${work.content}</div>
+                                <a href="#" class="download-btn" onclick="window.print()"><i class="fas fa-print"></i> Распечатать</a>
+                            </body>
+                            </html>
+                        `);
+                        viewWindow.document.close();
+                    }
+                }
+            } catch (error) {
+                showNotification('Ошибка при открытии работы', 'error');
+            }
+        }
+
+        async function downloadWork(workId) {
+            try {
+                const worksData = await getFile('data/works.json');
+                if (worksData) {
+                    const works = JSON.parse(worksData);
+                    const work = works.find(w => w.id === workId);
+                    
+                    if (work) {
+                        const content = `
+                            <!DOCTYPE html>
+                            <html>
+                            <head>
+                                <title>${work.title}</title>
+                                <meta charset="UTF-8">
+                                <style>
+                                    body { font-family: Arial, sans-serif; padding: 20px; max-width: 800px; margin: 0 auto; }
+                                    .work-title { color: #4a6fa5; margin-bottom: 20px; border-bottom: 2px solid #ff7e5f; padding-bottom: 10px; }
+                                    .work-content img { max-width: 100%; height: auto; }
+                                    .work-content video { max-width: 100%; }
+                                    .work-meta { color: #6c757d; margin-bottom: 20px; }
+                                </style>
+                            </head>
+                            <body>
+                                <h1 class="work-title">${work.title}</h1>
+                                <div class="work-meta">
+                                    <strong>Автор:</strong> Калугина Ольга Сергеевна<br>
+                                    <strong>Опубликовано:</strong> ${formatDate(work.date)}<br>
+                                    <strong>Теги:</strong> ${work.tags.join(', ')}<br>
+                                    <strong>Описание:</strong> ${work.description}
+                                </div>
+                                <div class="work-content">${work.content}</div>
+                            </body>
+                            </html>
+                        `;
+                        
+                        const blob = new Blob([content], { type: 'text/html' });
+                        const url = URL.createObjectURL(blob);
+                        downloadFile(url, `${work.title}.html`);
+                        URL.revokeObjectURL(url);
+                    }
+                }
+            } catch (error) {
+                showNotification('Ошибка при скачивании работы', 'error');
             }
         }
 
@@ -1190,18 +1593,79 @@
             previewWindow.document.close();
         }
 
+        // Drag and drop functionality
+        function setupDragAndDrop() {
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, preventDefaults, false);
+            });
+            
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropZone.addEventListener(eventName, highlight, false);
+            });
+            
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, unhighlight, false);
+            });
+            
+            function highlight() {
+                dropZone.classList.add('active');
+            }
+            
+            function unhighlight() {
+                dropZone.classList.remove('active');
+            }
+            
+            dropZone.addEventListener('drop', handleDrop, false);
+            dropZone.addEventListener('click', () => {
+                mediaUploadInput.click();
+            });
+            
+            async function handleDrop(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                await handleFiles(files);
+            }
+        }
+        
+        async function handleFiles(files) {
+            for (const file of files) {
+                const filename = `${generateId()}_${file.name}`;
+                
+                try {
+                    await uploadMediaFile(file, filename);
+                    showNotification(`Файл "${file.name}" успешно загружен`);
+                } catch (error) {
+                    showNotification(`Ошибка при загрузке файла "${file.name}"`, 'error');
+                }
+            }
+            
+            // Refresh media library
+            loadMediaFiles();
+        }
+
         // Event Listeners
         editorAccessBtn.addEventListener('click', () => {
             loginModal.style.display = 'flex';
         });
 
-        closeModalBtn.addEventListener('click', () => {
-            loginModal.style.display = 'none';
+        closeModalBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                loginModal.style.display = 'none';
+                profileEditModal.style.display = 'none';
+            });
         });
 
         window.addEventListener('click', (e) => {
             if (e.target === loginModal) {
                 loginModal.style.display = 'none';
+            }
+            if (e.target === profileEditModal) {
+                profileEditModal.style.display = 'none';
             }
         });
 
@@ -1212,6 +1676,7 @@
                 isLoggedIn = true;
                 loginModal.style.display = 'none';
                 editorContainer.style.display = 'block';
+                profileEditBtn.style.display = 'block';
                 showNotification('Доступ к редактору разрешен!');
                 accessKeyInput.value = '';
                 loadWorks();
@@ -1299,22 +1764,38 @@
         });
 
         mediaUploadInput.addEventListener('change', async (e) => {
-            const files = Array.from(e.target.files);
-            
-            for (const file of files) {
-                const filename = `${generateId()}_${file.name}`;
-                
-                try {
-                    await uploadMediaFile(file, filename);
-                    showNotification(`Файл "${file.name}" успешно загружен`);
-                } catch (error) {
-                    showNotification(`Ошибка при загрузке файла "${file.name}"`, 'error');
-                }
-            }
-            
-            // Refresh media library
-            loadMediaFiles();
+            await handleFiles(e.target.files);
             mediaUploadInput.value = '';
+        });
+
+        profileEditBtn.addEventListener('click', () => {
+            // Fill the form with current data
+            editName.value = profileName.textContent;
+            editPosition.value = profilePosition.textContent;
+            editExperience.value = profileExperience.textContent.replace('Стаж работы: ', '');
+            editEducation.value = profileEducation.textContent.replace('Образование: ', '');
+            editEmail.value = profileEmail.textContent;
+            editPhone.value = profilePhone.textContent;
+            editAddress.value = profileAddress.textContent;
+            editImage.value = profileImage.src;
+            
+            profileEditModal.style.display = 'flex';
+        });
+
+        saveProfileBtn.addEventListener('click', () => {
+            const profile = {
+                name: editName.value,
+                position: editPosition.value,
+                experience: `Стаж работы: ${editExperience.value}`,
+                education: `Образование: ${editEducation.value}`,
+                email: editEmail.value,
+                phone: editPhone.value,
+                address: editAddress.value,
+                image: editImage.value
+            };
+            
+            saveProfile(profile);
+            profileEditModal.style.display = 'none';
         });
 
         // Mobile menu functionality
@@ -1349,7 +1830,9 @@
         });
 
         // Initialize
+        loadProfile();
         loadWorks();
+        setupDragAndDrop();
     </script>
 </body>
 </html>
