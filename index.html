@@ -835,49 +835,7 @@
         <div class="container">
             <h2 class="section-title">Мои работы</h2>
             <div class="works-grid" id="worksGrid">
-                <div class="work-card">
-                    <img src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Методическое пособие" class="work-img">
-                    <div class="work-content">
-                        <h3 class="work-title">Методическое пособие по геометрии</h3>
-                        <div class="work-date">Опубликовано: 15.03.2023</div>
-                        <p class="work-description">Пособие содержит практические задания и методические рекомендации по изучению геометрии в 7-9 классах.</p>
-                        <div class="work-tags">
-                            <span class="tag">Геометрия</span>
-                            <span class="tag">7-9 класс</span>
-                            <span class="tag">Методичка</span>
-                        </div>
-                        <div class="work-actions">
-                            <button class="btn btn-sm" onclick="viewWork('demo1')">
-                                <i class="fas fa-eye"></i> Просмотреть
-                            </button>
-                            <button class="btn btn-sm btn-success" onclick="downloadWork('demo1')">
-                                <i class="fas fa-download"></i> Скачать
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="work-card">
-                    <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Интерактивный урок" class="work-img">
-                    <div class="work-content">
-                        <h3 class="work-title">Интерактивный урок "Задачи на проценты"</h3>
-                        <div class="work-date">Опубликовано: 10.02.2023</div>
-                        <p class="work-description">Разработка урока с использованием интерактивных заданий и визуализации для лучшего понимания темы.</p>
-                        <div class="work-tags">
-                            <span class="tag">Математика</span>
-                            <span class="tag">6 класс</span>
-                            <span class="tag">Интерактив</span>
-                        </div>
-                        <div class="work-actions">
-                            <button class="btn btn-sm" onclick="viewWork('demo2')">
-                                <i class="fas fa-eye"></i> Просмотреть
-                            </button>
-                            <button class="btn btn-sm btn-success" onclick="downloadWork('demo2')">
-                                <i class="fas fa-download"></i> Скачать
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                <!-- Works will be loaded dynamically -->
             </div>
         </div>
     </section>
@@ -1069,6 +1027,7 @@
             token: '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',
             owner: '0ptim1st-DK',
             repo: 'osteacher.github.io',
+            branch: 'main', // Добавляем ветку
             baseUrl: 'https://api.github.com'
         };
 
@@ -1150,10 +1109,15 @@
             };
 
             try {
+                console.log('Making GitHub API request to:', url);
                 const response = await fetch(url, config);
+                
                 if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('GitHub API error:', response.status, errorText);
                     throw new Error(`GitHub API error: ${response.status} ${response.statusText}`);
                 }
+                
                 return await response.json();
             } catch (error) {
                 console.error('GitHub API request failed:', error);
@@ -1167,37 +1131,48 @@
                 method: 'PUT',
                 body: JSON.stringify({
                     message: message,
-                    content: btoa(unescape(encodeURIComponent(content)))
+                    content: btoa(unescape(encodeURIComponent(content))),
+                    branch: GITHUB_CONFIG.branch
                 })
             });
         }
 
         async function getFile(path) {
             try {
-                const data = await githubAPI(`/contents/${path}`);
-                return decodeURIComponent(escape(atob(data.content)));
+                // Добавляем параметр ref для указания ветки
+                const data = await githubAPI(`/contents/${path}?ref=${GITHUB_CONFIG.branch}`);
+                
+                if (data.content) {
+                    return decodeURIComponent(escape(atob(data.content)));
+                } else {
+                    throw new Error('No content in response');
+                }
             } catch (error) {
+                console.log(`File ${path} not found:`, error.message);
                 return null;
             }
         }
 
         async function getDirectory(path) {
             try {
-                return await githubAPI(`/contents/${path}`);
+                // Добавляем параметр ref для указания ветки
+                return await githubAPI(`/contents/${path}?ref=${GITHUB_CONFIG.branch}`);
             } catch (error) {
+                console.log(`Directory ${path} not found:`, error.message);
                 return [];
             }
         }
 
         async function deleteFile(path, message) {
             try {
-                // First get the file to get its SHA
-                const fileData = await githubAPI(`/contents/${path}`);
+                // Сначала получаем файл чтобы получить его SHA
+                const fileData = await githubAPI(`/contents/${path}?ref=${GITHUB_CONFIG.branch}`);
                 return await githubAPI(`/contents/${path}`, {
                     method: 'DELETE',
                     body: JSON.stringify({
                         message: message,
-                        sha: fileData.sha
+                        sha: fileData.sha,
+                        branch: GITHUB_CONFIG.branch
                     })
                 });
             } catch (error) {
@@ -1225,6 +1200,7 @@
                     }
                 };
                 
+                reader.onerror = reject;
                 reader.readAsDataURL(file);
             });
         }
@@ -1237,7 +1213,9 @@
             document.body.appendChild(notification);
             
             setTimeout(() => {
-                notification.remove();
+                if (notification.parentNode) {
+                    notification.remove();
+                }
             }, 3000);
         }
 
@@ -1281,9 +1259,13 @@
                 if (profileData) {
                     const profile = JSON.parse(profileData);
                     updateProfileDisplay(profile);
+                    showNotification('Профиль загружен');
+                } else {
+                    showNotification('Профиль не найден, используются стандартные данные');
                 }
             } catch (error) {
-                console.log('No profile data found, using default');
+                console.log('Error loading profile:', error);
+                showNotification('Ошибка загрузки профиля', 'error');
             }
         }
 
@@ -1318,18 +1300,53 @@
         // Load works from GitHub
         async function loadWorks() {
             try {
+                showNotification('Загрузка работ...');
                 const worksData = await getFile('data/works.json');
                 if (worksData) {
                     const works = JSON.parse(worksData);
                     displayWorks(works);
+                    showNotification('Работы загружены');
+                } else {
+                    // Показываем демо данные если файл не найден
+                    displayDemoWorks();
+                    showNotification('Файл работ не найден, показаны демо-данные');
                 }
             } catch (error) {
-                console.log('No works found, using demo data');
+                console.log('Error loading works:', error);
+                displayDemoWorks();
+                showNotification('Ошибка загрузки работ, показаны демо-данные', 'error');
             }
         }
 
+        function displayDemoWorks() {
+            const demoWorks = [
+                {
+                    id: 'demo1',
+                    title: 'Методическое пособие по геометрии',
+                    description: 'Пособие содержит практические задания и методические рекомендации по изучению геометрии в 7-9 классах.',
+                    tags: ['Геометрия', '7-9 класс', 'Методичка'],
+                    date: new Date('2023-03-15').toISOString(),
+                    image: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'
+                },
+                {
+                    id: 'demo2',
+                    title: 'Интерактивный урок "Задачи на проценты"',
+                    description: 'Разработка урока с использованием интерактивных заданий и визуализации для лучшего понимания темы.',
+                    tags: ['Математика', '6 класс', 'Интерактив'],
+                    date: new Date('2023-02-10').toISOString(),
+                    image: 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'
+                }
+            ];
+            displayWorks(demoWorks);
+        }
+
         function displayWorks(works) {
-            if (!works || works.length === 0) return;
+            worksGrid.innerHTML = '';
+            
+            if (!works || works.length === 0) {
+                worksGrid.innerHTML = '<p style="text-align: center; grid-column: 1 / -1; padding: 2rem;">Работы пока не добавлены.</p>';
+                return;
+            }
             
             works.forEach(work => {
                 const workCard = document.createElement('div');
@@ -1369,7 +1386,7 @@
                 mediaGrid.innerHTML = '';
                 
                 if (mediaFilesData.length === 0) {
-                    mediaGrid.innerHTML = '<p style="text-align: center; grid-column: 1 / -1;">Медиафайлы не найдены.</p>';
+                    mediaGrid.innerHTML = '<p style="text-align: center; grid-column: 1 / -1; padding: 2rem;">Медиафайлы не найдены.</p>';
                     return;
                 }
                 
@@ -1407,8 +1424,8 @@
                     }
                 });
             } catch (error) {
-                console.log('No media files found');
-                mediaGrid.innerHTML = '<p style="text-align: center; grid-column: 1 / -1;">Медиафайлы не найдены.</p>';
+                console.log('Error loading media files:', error);
+                mediaGrid.innerHTML = '<p style="text-align: center; grid-column: 1 / -1; padding: 2rem;">Ошибка загрузки медиафайлов.</p>';
             }
         }
 
@@ -1550,23 +1567,19 @@
 
         function viewWork(workId) {
             if (workId.startsWith('demo')) {
-                // Demo work viewing
                 showNotification('Это демонстрационная работа');
                 return;
             }
             
-            // Implementation for real works would go here
             showNotification('Просмотр работы');
         }
 
         function downloadWork(workId) {
             if (workId.startsWith('demo')) {
-                // Demo work download
                 showNotification('Это демонстрационная работа');
                 return;
             }
             
-            // Implementation for real works would go here
             showNotification('Скачивание работы');
         }
 
@@ -1834,6 +1847,12 @@
         loadProfile();
         loadWorks();
         setupDragAndDrop();
+
+        // Debug info
+        console.log('GitHub Config:', {
+            ...GITHUB_CONFIG,
+            token: '***' // Не логируем токен
+        });
     </script>
 </body>
 </html>
