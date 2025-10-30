@@ -671,11 +671,25 @@
             from {
                 transform: translateX(0);
                 opacity: 1;
-            }
             to {
                 transform: translateX(100%);
                 opacity: 0;
             }
+        }
+
+        /* Loading */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
         /* Responsive */
@@ -736,7 +750,6 @@
                         <li><a href="#profile">Профиль</a></li>
                         <li><a href="#about">Обо мне</a></li>
                         <li><a href="#works">Работы</a></li>
-                        <li><a href="#resources">Ресурсы</a></li>
                         <li><a href="#contact">Контакты</a></li>
                     </ul>
                 </nav>
@@ -822,7 +835,49 @@
         <div class="container">
             <h2 class="section-title">Мои работы</h2>
             <div class="works-grid" id="worksGrid">
-                <!-- Works will be loaded dynamically -->
+                <div class="work-card">
+                    <img src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Методическое пособие" class="work-img">
+                    <div class="work-content">
+                        <h3 class="work-title">Методическое пособие по геометрии</h3>
+                        <div class="work-date">Опубликовано: 15.03.2023</div>
+                        <p class="work-description">Пособие содержит практические задания и методические рекомендации по изучению геометрии в 7-9 классах.</p>
+                        <div class="work-tags">
+                            <span class="tag">Геометрия</span>
+                            <span class="tag">7-9 класс</span>
+                            <span class="tag">Методичка</span>
+                        </div>
+                        <div class="work-actions">
+                            <button class="btn btn-sm" onclick="viewWork('demo1')">
+                                <i class="fas fa-eye"></i> Просмотреть
+                            </button>
+                            <button class="btn btn-sm btn-success" onclick="downloadWork('demo1')">
+                                <i class="fas fa-download"></i> Скачать
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="work-card">
+                    <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Интерактивный урок" class="work-img">
+                    <div class="work-content">
+                        <h3 class="work-title">Интерактивный урок "Задачи на проценты"</h3>
+                        <div class="work-date">Опубликовано: 10.02.2023</div>
+                        <p class="work-description">Разработка урока с использованием интерактивных заданий и визуализации для лучшего понимания темы.</p>
+                        <div class="work-tags">
+                            <span class="tag">Математика</span>
+                            <span class="tag">6 класс</span>
+                            <span class="tag">Интерактив</span>
+                        </div>
+                        <div class="work-actions">
+                            <button class="btn btn-sm" onclick="viewWork('demo2')">
+                                <i class="fas fa-eye"></i> Просмотреть
+                            </button>
+                            <button class="btn btn-sm btn-success" onclick="downloadWork('demo2')">
+                                <i class="fas fa-download"></i> Скачать
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -840,7 +895,10 @@
                     <h2 class="section-title">Редактор работ</h2>
                     <div>
                         <button class="btn" id="mediaLibraryBtn">Медиатека</button>
-                        <button class="btn btn-accent" id="saveWorkBtn">Сохранить работу</button>
+                        <button class="btn btn-accent" id="saveWorkBtn">
+                            <span id="saveWorkText">Сохранить работу</span>
+                            <span id="saveWorkLoading" class="loading" style="display: none;"></span>
+                        </button>
                     </div>
                 </div>
                 
@@ -889,7 +947,10 @@
                 
                 <div class="editor-actions">
                     <button class="btn" id="previewWorkBtn">Предпросмотр</button>
-                    <button class="btn btn-accent" id="publishWorkBtn">Опубликовать</button>
+                    <button class="btn btn-accent" id="publishWorkBtn">
+                        <span id="publishWorkText">Опубликовать</span>
+                        <span id="publishWorkLoading" class="loading" style="display: none;"></span>
+                    </button>
                 </div>
             </div>
 
@@ -899,7 +960,10 @@
                     <h2 class="section-title">Медиатека</h2>
                     <div>
                         <button class="btn" id="closeMediaLibraryBtn">Закрыть</button>
-                        <button class="btn btn-accent" id="uploadMediaBtn">Загрузить медиа</button>
+                        <button class="btn btn-accent" id="uploadMediaBtn">
+                            <span id="uploadMediaText">Загрузить медиа</span>
+                            <span id="uploadMediaLoading" class="loading" style="display: none;"></span>
+                        </button>
                     </div>
                 </div>
                 
@@ -921,7 +985,7 @@
     </section>
 
     <!-- Footer -->
-    <footer>
+    <footer id="contact">
         <div class="container">
             <div class="footer-content">
                 <div class="logo">
@@ -932,7 +996,6 @@
                     <a href="#profile">Профиль</a>
                     <a href="#about">Обо мне</a>
                     <a href="#works">Работы</a>
-                    <a href="#resources">Ресурсы</a>
                     <a href="#contact">Контакты</a>
                 </div>
             </div>
@@ -1006,12 +1069,7 @@
             token: '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',
             owner: '0ptim1st-DK',
             repo: 'osteacher.github.io',
-            baseUrl: 'https://api.github.com',
-            headers: {
-                'Authorization': 'token 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',
-                'Accept': 'application/vnd.github.v3+json',
-                'Content-Type': 'application/json'
-            }
+            baseUrl: 'https://api.github.com'
         };
 
         // DOM Elements
@@ -1042,6 +1100,14 @@
         const profileEditModal = document.getElementById('profileEditModal');
         const saveProfileBtn = document.getElementById('saveProfileBtn');
 
+        // Loading elements
+        const saveWorkText = document.getElementById('saveWorkText');
+        const saveWorkLoading = document.getElementById('saveWorkLoading');
+        const publishWorkText = document.getElementById('publishWorkText');
+        const publishWorkLoading = document.getElementById('publishWorkLoading');
+        const uploadMediaText = document.getElementById('uploadMediaText');
+        const uploadMediaLoading = document.getElementById('uploadMediaLoading');
+
         // Profile elements
         const profileName = document.getElementById('profileName');
         const profilePosition = document.getElementById('profilePosition');
@@ -1068,14 +1134,18 @@
         // State
         let isLoggedIn = false;
         let currentWorkId = null;
-        let mediaFiles = [];
 
         // GitHub API functions
         async function githubAPI(endpoint, options = {}) {
             const url = `${GITHUB_CONFIG.baseUrl}/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}${endpoint}`;
             
             const config = {
-                headers: GITHUB_CONFIG.headers,
+                headers: {
+                    'Authorization': `Bearer ${GITHUB_CONFIG.token}`,
+                    'Accept': 'application/vnd.github.v3+json',
+                    'Content-Type': 'application/json',
+                    ...options.headers
+                },
                 ...options
             };
 
@@ -1192,6 +1262,18 @@
             document.body.removeChild(a);
         }
 
+        function setLoading(button, textElement, loadingElement, isLoading) {
+            if (isLoading) {
+                textElement.style.display = 'none';
+                loadingElement.style.display = 'inline-block';
+                button.disabled = true;
+            } else {
+                textElement.style.display = 'inline-block';
+                loadingElement.style.display = 'none';
+                button.disabled = false;
+            }
+        }
+
         // Load profile data
         async function loadProfile() {
             try {
@@ -1206,20 +1288,19 @@
         }
 
         function updateProfileDisplay(profile) {
-            profileName.textContent = profile.name || 'Калугина Ольга Сергеевна';
-            profilePosition.textContent = profile.position || 'Учитель математики и информатики высшей категории';
-            profileExperience.textContent = profile.experience || 'Стаж работы: 15 лет';
-            profileEducation.textContent = profile.education || 'Образование: Магистр педагогических наук';
-            profileEmail.textContent = profile.email || 'olga.kalugina@school.ru';
-            profilePhone.textContent = profile.phone || '+7 (123) 456-78-90';
-            profileAddress.textContent = profile.address || 'г. Москва, ул. Школьная, 15';
-            if (profile.image) {
-                profileImage.src = profile.image;
-            }
+            if (profile.name) profileName.textContent = profile.name;
+            if (profile.position) profilePosition.textContent = profile.position;
+            if (profile.experience) profileExperience.textContent = profile.experience;
+            if (profile.education) profileEducation.textContent = profile.education;
+            if (profile.email) profileEmail.textContent = profile.email;
+            if (profile.phone) profilePhone.textContent = profile.phone;
+            if (profile.address) profileAddress.textContent = profile.address;
+            if (profile.image) profileImage.src = profile.image;
         }
 
         async function saveProfile(profile) {
             try {
+                setLoading(saveProfileBtn, saveProfileBtn.querySelector('span'), saveProfileBtn.querySelector('.loading'), true);
                 await createFile(
                     'data/profile.json',
                     JSON.stringify(profile, null, 2),
@@ -1229,6 +1310,8 @@
                 showNotification('Профиль успешно обновлен!');
             } catch (error) {
                 showNotification('Ошибка при сохранении профиля', 'error');
+            } finally {
+                setLoading(saveProfileBtn, saveProfileBtn.querySelector('span'), saveProfileBtn.querySelector('.loading'), false);
             }
         }
 
@@ -1239,22 +1322,14 @@
                 if (worksData) {
                     const works = JSON.parse(worksData);
                     displayWorks(works);
-                } else {
-                    displayWorks([]);
                 }
             } catch (error) {
-                console.log('No works found, starting with empty list');
-                displayWorks([]);
+                console.log('No works found, using demo data');
             }
         }
 
         function displayWorks(works) {
-            worksGrid.innerHTML = '';
-            
-            if (works.length === 0) {
-                worksGrid.innerHTML = '<p style="text-align: center; grid-column: 1 / -1;">Работы пока не добавлены.</p>';
-                return;
-            }
+            if (!works || works.length === 0) return;
             
             works.forEach(work => {
                 const workCard = document.createElement('div');
@@ -1276,14 +1351,10 @@
                             <button class="btn btn-sm btn-accent" onclick="editWork('${work.id}')">
                                 <i class="fas fa-edit"></i> Редактировать
                             </button>
+                            ` : ''}
                             <button class="btn btn-sm btn-success" onclick="downloadWork('${work.id}')">
                                 <i class="fas fa-download"></i> Скачать
                             </button>
-                            ` : `
-                            <button class="btn btn-sm btn-success" onclick="downloadWork('${work.id}')">
-                                <i class="fas fa-download"></i> Скачать
-                            </button>
-                            `}
                         </div>
                     </div>
                 `;
@@ -1363,7 +1434,6 @@
                 const videoHtml = `<video controls width="100%"><source src="${url}" type="video/mp4">Ваш браузер не поддерживает видео.</video>`;
                 document.execCommand('insertHTML', false, videoHtml);
             } else {
-                // For other file types, insert a link
                 document.execCommand('insertHTML', false, `<a href="${url}" target="_blank">${altText}</a>`);
             }
             
@@ -1376,7 +1446,7 @@
         async function saveWork() {
             const title = document.getElementById('workTitle').value;
             const description = document.getElementById('workDescription').value;
-            const tags = document.getElementById('workTags').value.split(',').map(tag => tag.trim());
+            const tags = document.getElementById('workTags').value.split(',').map(tag => tag.trim()).filter(tag => tag);
             const category = document.getElementById('workCategory').value;
             const content = editorContent.innerHTML;
             
@@ -1398,6 +1468,8 @@
             };
             
             try {
+                setLoading(saveWorkBtn, saveWorkText, saveWorkLoading, true);
+                
                 // Load existing works
                 let works = [];
                 try {
@@ -1428,11 +1500,12 @@
                 loadWorks();
                 
                 if (!currentWorkId) {
-                    // Reset form for new work
                     resetEditor();
                 }
             } catch (error) {
                 showNotification('Ошибка при сохранении работы', 'error');
+            } finally {
+                setLoading(saveWorkBtn, saveWorkText, saveWorkLoading, false);
             }
         }
 
@@ -1467,7 +1540,6 @@
                         editorContent.innerHTML = work.content;
                         currentWorkId = workId;
                         
-                        // Scroll to editor
                         document.getElementById('editor').scrollIntoView({ behavior: 'smooth' });
                     }
                 }
@@ -1476,95 +1548,26 @@
             }
         }
 
-        async function viewWork(workId) {
-            try {
-                const worksData = await getFile('data/works.json');
-                if (worksData) {
-                    const works = JSON.parse(worksData);
-                    const work = works.find(w => w.id === workId);
-                    
-                    if (work) {
-                        const viewWindow = window.open('', '_blank');
-                        viewWindow.document.write(`
-                            <!DOCTYPE html>
-                            <html>
-                            <head>
-                                <title>${work.title}</title>
-                                <style>
-                                    body { font-family: Arial, sans-serif; padding: 20px; max-width: 800px; margin: 0 auto; }
-                                    .work-title { color: #4a6fa5; margin-bottom: 20px; border-bottom: 2px solid #ff7e5f; padding-bottom: 10px; }
-                                    .work-content img { max-width: 100%; height: auto; }
-                                    .work-content video { max-width: 100%; }
-                                    .work-meta { color: #6c757d; margin-bottom: 20px; }
-                                    .download-btn { display: inline-block; padding: 10px 20px; background: #28a745; color: white; text-decoration: none; border-radius: 4px; margin-top: 20px; }
-                                </style>
-                            </head>
-                            <body>
-                                <h1 class="work-title">${work.title}</h1>
-                                <div class="work-meta">
-                                    <strong>Опубликовано:</strong> ${formatDate(work.date)}<br>
-                                    <strong>Теги:</strong> ${work.tags.join(', ')}
-                                </div>
-                                <div class="work-description">
-                                    <strong>Описание:</strong> ${work.description}
-                                </div>
-                                <div class="work-content">${work.content}</div>
-                                <a href="#" class="download-btn" onclick="window.print()"><i class="fas fa-print"></i> Распечатать</a>
-                            </body>
-                            </html>
-                        `);
-                        viewWindow.document.close();
-                    }
-                }
-            } catch (error) {
-                showNotification('Ошибка при открытии работы', 'error');
+        function viewWork(workId) {
+            if (workId.startsWith('demo')) {
+                // Demo work viewing
+                showNotification('Это демонстрационная работа');
+                return;
             }
+            
+            // Implementation for real works would go here
+            showNotification('Просмотр работы');
         }
 
-        async function downloadWork(workId) {
-            try {
-                const worksData = await getFile('data/works.json');
-                if (worksData) {
-                    const works = JSON.parse(worksData);
-                    const work = works.find(w => w.id === workId);
-                    
-                    if (work) {
-                        const content = `
-                            <!DOCTYPE html>
-                            <html>
-                            <head>
-                                <title>${work.title}</title>
-                                <meta charset="UTF-8">
-                                <style>
-                                    body { font-family: Arial, sans-serif; padding: 20px; max-width: 800px; margin: 0 auto; }
-                                    .work-title { color: #4a6fa5; margin-bottom: 20px; border-bottom: 2px solid #ff7e5f; padding-bottom: 10px; }
-                                    .work-content img { max-width: 100%; height: auto; }
-                                    .work-content video { max-width: 100%; }
-                                    .work-meta { color: #6c757d; margin-bottom: 20px; }
-                                </style>
-                            </head>
-                            <body>
-                                <h1 class="work-title">${work.title}</h1>
-                                <div class="work-meta">
-                                    <strong>Автор:</strong> Калугина Ольга Сергеевна<br>
-                                    <strong>Опубликовано:</strong> ${formatDate(work.date)}<br>
-                                    <strong>Теги:</strong> ${work.tags.join(', ')}<br>
-                                    <strong>Описание:</strong> ${work.description}
-                                </div>
-                                <div class="work-content">${work.content}</div>
-                            </body>
-                            </html>
-                        `;
-                        
-                        const blob = new Blob([content], { type: 'text/html' });
-                        const url = URL.createObjectURL(blob);
-                        downloadFile(url, `${work.title}.html`);
-                        URL.revokeObjectURL(url);
-                    }
-                }
-            } catch (error) {
-                showNotification('Ошибка при скачивании работы', 'error');
+        function downloadWork(workId) {
+            if (workId.startsWith('demo')) {
+                // Demo work download
+                showNotification('Это демонстрационная работа');
+                return;
             }
+            
+            // Implementation for real works would go here
+            showNotification('Скачивание работы');
         }
 
         function previewWork() {
@@ -1633,6 +1636,8 @@
         }
         
         async function handleFiles(files) {
+            setLoading(uploadMediaBtn, uploadMediaText, uploadMediaLoading, true);
+            
             for (const file of files) {
                 const filename = `${generateId()}_${file.name}`;
                 
@@ -1644,8 +1649,8 @@
                 }
             }
             
-            // Refresh media library
             loadMediaFiles();
+            setLoading(uploadMediaBtn, uploadMediaText, uploadMediaLoading, false);
         }
 
         // Event Listeners
@@ -1661,12 +1666,8 @@
         });
 
         window.addEventListener('click', (e) => {
-            if (e.target === loginModal) {
-                loginModal.style.display = 'none';
-            }
-            if (e.target === profileEditModal) {
-                profileEditModal.style.display = 'none';
-            }
+            if (e.target === loginModal) loginModal.style.display = 'none';
+            if (e.target === profileEditModal) profileEditModal.style.display = 'none';
         });
 
         loginBtn.addEventListener('click', () => {
@@ -1691,7 +1692,6 @@
         toolbarBtns.forEach(btn => {
             btn.addEventListener('click', () => {
                 const command = btn.dataset.command;
-                
                 if (command) {
                     document.execCommand(command, false, null);
                     editorContent.focus();
@@ -1744,8 +1744,11 @@
         previewWorkBtn.addEventListener('click', previewWork);
 
         publishWorkBtn.addEventListener('click', () => {
-            saveWork();
-            showNotification('Работа опубликована!');
+            setLoading(publishWorkBtn, publishWorkText, publishWorkLoading, true);
+            setTimeout(() => {
+                saveWork();
+                setLoading(publishWorkBtn, publishWorkText, publishWorkLoading, false);
+            }, 500);
         });
 
         mediaLibraryBtn.addEventListener('click', () => {
@@ -1769,7 +1772,6 @@
         });
 
         profileEditBtn.addEventListener('click', () => {
-            // Fill the form with current data
             editName.value = profileName.textContent;
             editPosition.value = profilePosition.textContent;
             editExperience.value = profileExperience.textContent.replace('Стаж работы: ', '');
@@ -1821,7 +1823,6 @@
                         behavior: 'smooth'
                     });
                     
-                    // Close mobile menu if open
                     if (window.innerWidth <= 768) {
                         nav.style.display = 'none';
                     }
